@@ -1,0 +1,68 @@
+package com.example.splashscreen
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import androidx.core.app.ActivityOptionsCompat
+import com.example.splashscreen.databinding.ActivitySplashScreenBinding
+
+class SplashScreenActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySplashScreenBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivitySplashScreenBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        Animacio(binding.bolaImageView) //animacion sobre el view del layout
+
+        binding.bolaImageView.setOnClickListener {//evento click sobre el view
+            val intent = Intent(applicationContext, MainActivity::class.java)//creo un intent asignandole el mainactivity
+            val options = ActivityOptionsCompat.makeCustomAnimation(applicationContext, android.R.anim.fade_in, android.R.anim.fade_out)//variable que almacena la animacion en la aplicacion salida entrada
+            startActivity(intent, options.toBundle()) //empiezo la actividad con la animacion
+        }
+
+    }
+
+    fun Animacio(view: View){ //Animacion del SplashScreen
+
+        val duration = 2000L // Tiempo que dura la animacion
+        //ubicaciones por donde el view para antes de emepezar otra
+        val centro = 0f
+        val centroIzquierdo = -375f
+        val izquierdaSuperior = -775f
+        val derechaSuperior = 350f
+        val izquierdaInferior = 750f
+        val inferiorIzquierda = -350f
+        val izquierdaInferriorPunotBajo = 750f
+        val izquierdaInferriorPunotAlto = -750f
+        val puntoCentral = 40f
+        val anim0 = ObjectAnimator.ofFloat(view, "translationX", centro, centroIzquierdo) //creo instancia con Animator para la propieda X
+        anim0.duration = duration //establezco duracion de la animacon
+
+        val anim1 = ObjectAnimator.ofFloat(view, "translationY", centro, izquierdaSuperior ) //creo instancia con Animator para la propieda Y
+        anim1.duration = duration//establezco duracion de la animacon
+
+        val anim2 = ObjectAnimator.ofFloat(view, "translationX", centroIzquierdo, derechaSuperior)//creo instancia con Animator para la propieda X
+        anim2.duration = duration//establezco duracion de la animacon
+
+        val anim3 = ObjectAnimator.ofFloat(view, "translationY", izquierdaSuperior, izquierdaInferior)//creo instancia con Animator para la propieda Y
+        anim3.duration = duration//establezco duracion de la animacon
+
+        val anim4 = ObjectAnimator.ofFloat(view, "translationX", derechaSuperior, inferiorIzquierda)//creo instancia con Animator para la propieda X
+        anim4.duration = duration//establezco duracion de la animacon
+
+        val anim5 = ObjectAnimator.ofFloat(view, "translationY", izquierdaInferriorPunotBajo, izquierdaInferriorPunotAlto)//creo instancia con Animator para la propieda Y
+        anim5.duration = duration//establezco duracion de la animacon
+
+        val anim6 = ObjectAnimator.ofFloat(view, "translationX", inferiorIzquierda, puntoCentral)//creo instancia con Animator para la propieda X
+        anim6.duration = duration//establezco duracion de la animacon
+
+        val anim = AnimatorSet() //creo una instancia de Animator
+        anim.playSequentially(anim0,anim1,anim2, anim3, anim4,anim5, anim6) //hago la reproducion en sequencia pasando las animaciones por parametro
+
+        anim.start()//empiezo la animacion
+    }
+}
